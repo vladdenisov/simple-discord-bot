@@ -1,0 +1,20 @@
+{
+  "name": "just-discord-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vlad Denisov",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "ffmpeg-binaries": "^4.0.0",
+    "node-fetch": "^2.5.0",
+    "node-opus": "^0.3.1",
+    "request": "^2.88.0",
+    "ytdl": "^0.11.1",
+    "ytdl-core": "^0.29.1"
+  }
+}
