@@ -3,23 +3,17 @@ const {
     prefix
 } = require('../json/config.json');
 
-async function playSong(server, urlI, message) {
-    if (!urlI) {
-        serverQueue.voiceChannel.leave();
-        server.queue = [];
-        return;
-    }
-    server.dispatcher = server.connection.playStream(ytdl(urlI, {
+async function playSong(server, message) {
+    const link = String(server.queue[0]);
+    const song_name_next = await ytdl.getInfo(link);
+    message.channel.send(`Now playing ${song_name_next.title}`);
+    server.dispatcher = server.connection.play(ytdl(link, {
         filter: "audioonly"
     }));
     server.dispatcher.on('end', async () => {
         if (server.queue[1]) {
             server.queue.shift();
-            const song = String(server.queue[0]);
-            console.log("------SONG " + song);
-            const song_name_next = await ytdl.getInfo(song);
-            message.channel.send(`Now playing ${song_name_next.title}`);
-            await playSong(server, song, message);
+            await playSong(server, message);
             return;
         }
         if (server.queue[0] && !server.queue[1]) {
@@ -29,6 +23,8 @@ async function playSong(server, urlI, message) {
     })
     server.dispatcher.on('error', (error) => {
         console.log(error);
+        server.queue.shift();
+        playSong(server, message);
     })
 }
 
@@ -39,21 +35,29 @@ exports.run = async (client, message, args) => {
         return;
     }
     let urlI = String(args[0]);
-    server.queue.push(urlI);
+    let song_name;
     //console.log(server.queue + "lol");
     let name;
-    const song_name = await ytdl.getInfo(urlI);
-    if (server.queue.length > 1) {
-        async function a() {
-            message.reply(`Added ${song_name.title} to queue on ${server.queue.length - 1} position`);
-            return;
-        }
-        a();
-    } else {
-        message.channel.send(`Now playing ${song_name.title}`);
-        await playSong(server, urlI, message);
-    }
+    try {
+        song_name = await ytdl.getInfo(urlI);
+    } catch (error) {
+        message.reply("Provide valid link to YouTube video");
+    } finally {
+        if (song_name.title) {
+            server.queue.push(urlI);
+            if (server.queue.length > 1) {
+                async function a() {
+                    message.reply(`Added ${song_name.title} to queue on ${server.queue.length - 1} position`);
+                    return;
+                }
+                a();
+            } else {
+                await playSong(server, message);
+            }
+        } else {
 
-    console.log("----- " + server.queue)
+        }
+        console.log("----- " + server.queue)
+    }
 }
 module.exports.playSong = playSong;

@@ -1,6 +1,6 @@
 exports.run = async (client, message, args) => {
-    if (message.member.voiceChannel) {
-        message.member.voiceChannel.join()
+    if (message.member.voice.channel) {
+        message.member.voice.channel.join()
             .then(connection => {
                 message.reply('I have successfully connected to the channel!');
                 if (!servers[message.guild.id]) {

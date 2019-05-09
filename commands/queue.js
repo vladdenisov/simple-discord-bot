@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
         message.channel.send(`${song_name.title} is on ${args[0]} position`);
     } else {
 
-        let qEmb = new discord.RichEmbed()
+        let qEmb = new discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Queue')
             .setTimestamp();

@@ -9,9 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.4.2",
+    "discord.js": "github:discordjs/discord.js",
     "enmap": "^4.8.5",
-    "ffmpeg-binaries": "^4.0.0",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-static": "^2.4.0",
+    "htmlparser": "^1.7.7",
     "node-opus": "^0.3.1",
     "request": "^2.88.0",
     "ytdl-core": "^0.29.1"
