@@ -6,9 +6,11 @@ const {
 } = require('./json/config.json');
 const Enmap = require("enmap");
 const fs = require("fs");
+const queue = require('./commands/play.js');
 
 const client = new discord.Client();
 client.commands = new Enmap();
+global.servers = {};
 
 fs.readdir("./commands/", (err, files) => {
     if (err) return console.error(err);

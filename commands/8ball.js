@@ -17,5 +17,5 @@ exports.run = (client, message, args) => {
     const max = json.length + 1;
     const random = Math.round(Math.random() * (max - min) + min);
     console.log(random);
-    message.reply(json[random]);
+    message.reply(json[random - 1]);
 };
