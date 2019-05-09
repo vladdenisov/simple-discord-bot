@@ -17,7 +17,7 @@ async function playSong(server, message) {
             return;
         }
         if (server.queue[0] && !server.queue[1]) {
-            message.member.voiceChannel.leave();
+            message.member.voice.channel.leave();
             message.channel.send("Queue is clear. Leaving channel")
         }
     })
