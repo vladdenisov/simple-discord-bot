@@ -16,12 +16,14 @@ exports.run = async (client, message, args) => {
         let qEmb = new discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Queue')
-            .setTimestamp();
+            .setTimestamp()
+            .addField("*Entries:*", `*${server.queue.length - 1}*`);
         var queue = Promise.resolve(); // in ES6 or BB, just Promise.resolve();
         let songs = [];
         let c = 1;
         server.queue.forEach(function (el) {
             queue = queue.then(async function (res) {
+                if (c > 11) return;
                 const song_name = await ytdl.getInfo(String(el));
                 if (c === 1) {
                     c++;
@@ -33,6 +35,7 @@ exports.run = async (client, message, args) => {
                     c++;
                     return;
                 }
+
 
             });
         });
