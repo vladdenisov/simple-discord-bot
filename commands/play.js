@@ -1,4 +1,3 @@
-const ytdlD = require('ytdl-core-discord');
 const ytdl = require('ytdl-core');
 const {
     prefix
