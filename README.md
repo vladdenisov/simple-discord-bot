@@ -41,6 +41,6 @@ Also avalible in Russian.
 *Shows current player queue*
 #### Syntax
 If you want to see all queue: 
-`{prefix}queue \`
+`{prefix}queue`
 If you want to see specific position: 
 `{prefix}queue {position}`
