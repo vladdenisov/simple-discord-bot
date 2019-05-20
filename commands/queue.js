@@ -1,6 +1,7 @@
 const ytdl = require('ytdl-core');
 const discord = require('discord.js');
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args = ['pg', '0']) => {
+    if (!args[0]) args = ['pg', '1'];
     const server = servers[message.guild.id];
     if (!server) {
         message.channel.send(`I need to join channel first`);
@@ -8,40 +9,58 @@ exports.run = async (client, message, args) => {
     if (!server.queue || server.queue === []) {
         message.channel.send(`Queue is clear`);
     }
-    if (args[0]) {
-        const song_name = await ytdl.getInfo(server.queue[args[0] - 1]);
-        message.channel.send(`${song_name.title} is on ${args[0]} position`);
-    } else {
-
+    if (args[0] === 'rm') {
+        if (!args[1]) {
+            message.reply("Provide a number of song to remove");
+            return;
+        }
+        if (server.queue[parseInt(args[1])]) {
+            let s_name = server.queue[parseInt(args[1])].title;
+            server.queue.splice(parseInt(args[1]), 1);
+            message.channel.send(`Successfully removed ${s_name} from position ${args[1]}`);
+            return;
+        }
+    }
+    if (args[0] === 'mv') {
+        if (!args[1]) {
+            message.reply("Provide a number of song to remove");
+            return;
+        }
+        if (server.queue[parseInt(args[1])] && server.queue[parseInt(args[2])]) {
+            let t = server.queue[parseInt(args[1])];
+            server.queue[parseInt(args[1])] = server.queue[parseInt(args[2])];
+            server.queue[parseInt(args[2])] = t;
+            message.channel.send("Successfully changed `" + t.title + "` to `" + server.queue[parseInt(args[1])].title + "` position")
+            return;
+        }
+    }
+    if (args[0] === 'pg') {
+        let num = (args[1]) ? parseInt(args[1]) : 1;
         let qEmb = new discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Queue')
             .setTimestamp()
             .addField("*Entries:*", `*${server.queue.length - 1}*`);
-        var queue = Promise.resolve(); // in ES6 or BB, just Promise.resolve();
+        var queue = Promise.resolve();
         let songs = [];
-        let c = 1;
-        server.queue.forEach(function (el) {
-            queue = queue.then(async function (res) {
-                if (c > 11) return;
-                const song_name = await ytdl.getInfo(String(el));
-                if (c === 1) {
-                    c++;
-                    return;
-                } else {
-                    // songs.push(song_name.title);
-                    // console.log(songs);
-                    qEmb.addField(`${c - 1}. ${song_name.title}`, ` [Youtube](${el})`);
-                    c++;
-                    return;
-                }
+        let cmax
+        let cm = num * 10;
+        let c = cm - 9;
+        if (num === 1) {
+            c = 1;
+            cm = 10;
+        }
+        queue.then(async function (res) {
+            for (i = c; i <= cm; i++) {
+                let song = server.queue[i];
+                // songs.push(song_name.title);
+                // console.log(songs);
+                qEmb.addField(`${i}. ${song.title}`, ` [YouTube](${song.url})`);
+            }
+        })
 
-
-            });
-        });
         queue.then(async function (lastResponse) {
-            const song_name = await ytdl.getInfo(String(server.queue[0]));
-            qEmb.addField(`Now Playing`, `[${song_name.title}](${server.queue[0]})`);
+            qEmb.addField(`Now Playing`, `[${server.queue[0].title}](${server.queue[0].url})`);
             message.channel.send(qEmb);
         });
 

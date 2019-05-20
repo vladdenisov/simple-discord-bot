@@ -1,15 +1,15 @@
 exports.run = (client, message, args) => {
     const value = parseInt(args[0]);
     if (value >= 1) {
-        message.channel.fetchMessages({
+        message.channel.messages.fetch({
             limit: value + 1
         }).then(messages => {
             messages_resp = messages;
             messages.map(msg => {
-                message.channel.fetchMessage(msg.id).then(msg => msg.delete()).catch(err => {
+                message.channel.messages.fetch(msg.id).then(msg => msg.delete()).catch(err => {
                     message.channel.send("Unable to delete message");
                     setTimeout(function () {
-                        message.channel.fetchMessage(message.channel.fetchMessages().first().id).delete();
+                        message.channel.messages.fetch(message.channel.fetchMessages().first().id).delete();
                     }, 2000);
                 });
             })
