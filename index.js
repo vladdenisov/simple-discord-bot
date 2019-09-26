@@ -7,11 +7,11 @@ const {
 const Enmap = require("enmap");
 const fs = require("fs");
 const queue = require('./commands/play.js');
+const music_main = require("./music/main.js");
 
 const client = new discord.Client();
 client.commands = new Enmap();
 global.servers = {};
-
 fs.readdir("./commands/", (err, files) => {
     if (err) return console.error(err);
     files.forEach(file => {
@@ -30,7 +30,14 @@ client.on("ready", () => {
 
 client.on("message", (message) => {
     if (message.author.bot) return;
-    if (message.content.indexOf(prefix) !== 0) return;
+    if (message.content.indexOf(prefix) !== 0) {
+        if (message.channel.name === "music_req") {
+            music_main(message, client, "PLAY_MUSIC");
+            console.log('1');
+            return;
+        }
+        else return;
+    };
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
     console.log(args);
@@ -38,5 +45,25 @@ client.on("message", (message) => {
     if (!cmd) return;
     cmd.run(client, message, args);
 });
-
-client.login(token);
+client.login(token)
+    .then(function () {
+        console.log('Good!')
+    }, function (err) {
+        console.log(err)
+        client.destroy()
+    });
+// client.on('raw', event => {
+//     console.log('\nRaw event data:\n', event);
+//     
+//     // if (event.t === "MESSAGE_REACTION_ADD" && client.channels.get(d.channel_id).name === 'music_req') {
+//     //     console.log("!!!!!!!!!!!");
+//     // }
+// });
+client.once('connected', () => {
+    client.on('raw', event => {
+        console.log('\nRaw event data a:\n', event);
+        // if (event.t === "MESSAGE_REACTION_ADD" && client.channels.get(d.channel_id).name === 'music_req') {
+        //     console.log("!!!!!!!!!!!");
+        // }
+    });
+})

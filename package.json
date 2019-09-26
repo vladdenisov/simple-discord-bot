@@ -9,15 +9,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "github:discordjs/discord.js",
+    "discord.js": "discordjs/discord.js",
     "enmap": "^4.8.5",
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^2.4.0",
+    "git": "^0.1.5",
     "htmlparser": "^1.7.7",
+    "node-fetch": "^2.6.0",
     "node-opus": "^0.3.1",
     "request": "^2.88.0",
-    "youtube-playlist": "^1.0.2",
-    "ytdl-core": "github:fent/node-ytdl-core#master",
+    "ytdl-core": "^0.29.3",
+    "ytpl": "^0.1.16",
     "ytsr": "^0.1.8"
   },
   "devDependencies": {
