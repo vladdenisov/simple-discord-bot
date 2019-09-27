@@ -53,7 +53,7 @@ Also avalible in Russian.
 - Music can stop suddenly on first play on server
 - Not showing all error messages 
 
-#TODO
+# TODO
 - Add link to embed message in *music_req*  channel
 - Remove useless code 
 - Rework some functions, that are somehow work
