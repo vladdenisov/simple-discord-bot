@@ -9,15 +9,15 @@
 **If you have linux, before installation you need to run:**
 `sudo apt-get install autoconf libtool`
 
-##MUSIC
-###How does it work?
+## MUSIC
+### How does it work?
 At first you need to run command `{prefix}init`
 Bot will create channel called ***music_req***
  **DO NOT RENAME IT!**
  ***To listen to music you just simply need to send link to YouTube video to that channel.***
  You can contol music by adding and removing reactions to main message in **music_req** channel.
  **REACTIONS ARE GENERATED AUTOMATICALLY!**
- ###Music Commands
+ ### Music Commands
  #### Playlist 
  *Play playlist from YouTube or YTMusic*
  ##### Syntax 
