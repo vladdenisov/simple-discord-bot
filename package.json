@@ -19,7 +19,7 @@
     "node-opus": "^0.3.1",
     "request": "^2.88.0",
     "ytdl-core": "^0.29.3",
-    "ytpl": "^0.1.16",
+    "ytpl": "^0.1.17",
     "ytsr": "^0.1.8"
   },
   "devDependencies": {
