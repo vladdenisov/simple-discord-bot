@@ -29,7 +29,7 @@ If you want to see all queue:
 `{prefix}queue`
 If you want to see specific position: 
 `{prefix}queue {position}`
-If you want to ** swap** songs position: 
+If you want to **swap** songs position: 
 `{prefix}queue mv {position of song1} {position of song2}`
 
 
