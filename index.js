@@ -6,7 +6,6 @@ const {
 } = require('./json/config.json');
 const Enmap = require("enmap");
 const fs = require("fs");
-const queue = require('./commands/play.js');
 const music_main = require("./music/main.js");
 
 const client = new discord.Client();

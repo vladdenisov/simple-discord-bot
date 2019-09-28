@@ -8,8 +8,6 @@ const playYT = async (message) => {
         console.log("new connect");
         await join(message);
     }
-
-    //console.log(server.queue);
     const link = String(server.queue[0].url);
     message.channel.messages.fetch().then((messages) => {
         messages = Array.from(messages);
@@ -26,9 +24,6 @@ const playYT = async (message) => {
             .addField('Length: ', server.queue[0].length)
         firstMsg.edit(eEmbed);
         firstMsg.react("⏭").then(() => firstMsg.react('⏯')).then(() => firstMsg.react('⏹'))
-        const filter = (reaction, user) => {
-            return ['⏹', '⏯', '⏭'].includes(reaction.emoji.name) && user.id !== firstMsg.author.id;
-        };
         let m = [];
         server.queue.map((el) => { if (t === 0) { t++; return; } else if (t > 20) { return; } else { t++; m.push(`${t - 1}. **${el.title}** __Length: ${el.length}__\n`); } })
         secMsg.edit(`***Queue List: \n*** ${m.join("")}`);
@@ -45,11 +40,6 @@ const playYT = async (message) => {
     }
 
     server.dispatcher.on('end', async () => {
-        //console.log(server.queue);
-        // if (server.queue[0] && !server.queue[1]) {
-        //     message.member.voice.channel.leave();
-        //     message.channel.send("Queue is clear. Leaving channel")
-        // }
         if (server.queue[1]) {
             server.queue.shift();
             playYT(message, server);

@@ -4,15 +4,13 @@ const {
 } = require('../utils/playYT.js');
 const { leave } = require('../utils/leave.js');
 const { join } = require('../utils/join.js');
-const { Client, MessageEmbed } = require('discord.js');
 module.exports = async function music_main(message, client, args) {
     console.log([message.content]);
     message.delete();
     let l = 0;
     function fmtMSS(s) { return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s }
     if (!servers[message.guild.id]) { await join(message); l++ }
-    let server = servers[message.guild.id];
-    // console.log(server.connection);
+    let server = servers[message.guild.id]
     if (servers[message.guild.id]) {
         if (server.connection.leave === true) {
             console.log("new connect");
@@ -21,7 +19,7 @@ module.exports = async function music_main(message, client, args) {
     }
 
     let info;
-    console.log(servers[message.guild.id].hooked);
+    console.log("IS HOOKED: " + servers[message.guild.id].hooked);
     if (!servers[message.guild.id].hooked) {
         servers[message.guild.id] = {
             "hooked": true,
@@ -31,16 +29,13 @@ module.exports = async function music_main(message, client, args) {
 
         }
         if (server.dispatcher) server.dispatcher.pausedSince === null;
-        console.log("NEW " + servers[message.guild.id].hooked);
+        console.log("NEW ishooked" + servers[message.guild.id].hooked);
         console.log("HOOKING");
         client.on('raw', event => {
             server = servers[message.guild.id];
-
-            //console.log('\nRaw event daata:\n', event);
             let mRCH = message.guild.channels.find(channel => channel.name === "music_req");
-            //console.log(mRCH.id);
             if ((event.t === "MESSAGE_REACTION_ADD" || event.t === "MESSAGE_REACTION_REMOVE") && parseInt(mRCH.id) === parseInt(event.d.channel_id)) {
-                console.log(event);
+                if (message.guild.members.get(event.d.user_id).user.bot) return;
                 if (event.d.emoji.name === "⏭") {
                     server.dispatcher.end();
                     server.dispatcher.pausedSince === null;
@@ -86,7 +81,6 @@ module.exports = async function music_main(message, client, args) {
             } finally {
                 if (info.title) {
                     let len = fmtMSS(info.length_seconds);
-                    //console.log(info.player_response.videoDetails.thumbnail.thumbnails[info.player_response.videoDetails.thumbnail.thumbnails.length - 1]);
                     let obj = {
                         url: url,
                         title: info.title,
@@ -94,16 +88,14 @@ module.exports = async function music_main(message, client, args) {
                         thumbnail: info.player_response.videoDetails.thumbnail.thumbnails[info.player_response.videoDetails.thumbnail.thumbnails.length - 1].url
                     }
                     server.queue.push(obj);
-                    //console.log(server.queue);
                     if (server.queue[0]) {
                         if (!server.queue[1]) {
                             playYT(message);
                         } else {
                             message.channel.messages.fetch().then(async (messages) => {
                                 messages = Array.from(messages);
-                                let firstMsg = messages[messages.length - 1][1];
                                 let secMsg = messages[messages.length - 2][1];
-                                let t = 0, l = 0;
+                                let t = 0;
                                 let m = [];
                                 server.queue.map((el) => { if (t === 0) { t++; return; } else if (t > 20) { return; } else { t++; m.push(`${t - 1}. **${el.title}** __Length: ${el.length}__\n`); } })
                                 secMsg.edit(`***Queue List: \n*** ${m.join("")}`);
@@ -117,16 +109,16 @@ module.exports = async function music_main(message, client, args) {
     }
 
     if (args === "PLAYLIST_PLAY") {
-        message.channel.messages.fetch().then((messages) => {
-            console.log("CHANGE");
-            messages = Array.from(messages);
-            let firstMsg = messages[messages.length - 1][1];
-            let secMsg = messages[messages.length - 2][1];
-            let t = 0;
-            let m = [];
-            server.queue.map((el) => { if (t === 0) { t++; return; } else if (t > 20) { return; } else { t++; m.push(`${t - 1}. **${el.title}** __Length: ${el.length}__\n`); } })
-            secMsg.edit(`***Queue List: \n*** ${m.join("")}`);
-        }).then(playYT(message));
+        playYT(message);
+        // message.channel.messages.fetch().then((messages) => {
+        //     console.log("CHANGE");
+        //     messages = Array.from(messages);
+        //     let secMsg = messages[messages.length - 2][1];
+        //     let t = 0;
+        //     let m = [];
+        //     server.queue.map((el) => { if (t === 0) { t++; return; } else if (t > 20) { return; } else { t++; m.push(`${t - 1}. **${el.title}** __Length: ${el.length}__\n`); } })
+        //     secMsg.edit(`***Queue List: \n*** ${m.join("")}`);
+        // }).then();
 
 
     }
