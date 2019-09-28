@@ -1,6 +1,6 @@
-# Simple Discord Bot [![Build Status](https://travis-ci.com/vladdenisov/discord-bots.svg?token=mzc4DcXac7sfAzMqR4pk&branch=master)](https://travis-ci.com/vladdenisov/discord-bots)
+# Simple Discord Bot [![Build Status](https://travis-ci.com/vladdenisov/simple-discord-bot.svg?branch=master)](https://travis-ci.com/vladdenisov/simple-discord-bot)
 ## Installation
-1.  `git clone https://github.com/vladdenisov/discord-bots.git`
+1.  `git clone https://github.com/vladdenisov/simple-discord-bot.git`
 1.  `cd discord-bots`
 1. `npm i or yarn`
 1. `Edit json/config.json`
