@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "discordjs/discord.js",
-    "enmap": "^4.8.5",
+    "enmap": "^5.1.2",
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^2.4.0",
     "git": "^0.1.5",
@@ -23,6 +23,6 @@
     "ytsr": "^0.1.8"
   },
   "devDependencies": {
-    "eslint": "^5.16.0"
+    "eslint": "^6.4.0"
   }
 }
