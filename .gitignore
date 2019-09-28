@@ -1,2 +1,6 @@
 node_modules/
+old/
 package-lock.json
+yarn.lock
+yarn-error.log
+json/embed.json

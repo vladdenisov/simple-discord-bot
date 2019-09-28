@@ -52,18 +52,3 @@ client.login(token)
         console.log(err)
         client.destroy()
     });
-// client.on('raw', event => {
-//     console.log('\nRaw event data:\n', event);
-//     
-//     // if (event.t === "MESSAGE_REACTION_ADD" && client.channels.get(d.channel_id).name === 'music_req') {
-//     //     console.log("!!!!!!!!!!!");
-//     // }
-// });
-client.once('connected', () => {
-    client.on('raw', event => {
-        console.log('\nRaw event data a:\n', event);
-        // if (event.t === "MESSAGE_REACTION_ADD" && client.channels.get(d.channel_id).name === 'music_req') {
-        //     console.log("!!!!!!!!!!!");
-        // }
-    });
-})
