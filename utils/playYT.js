@@ -15,12 +15,12 @@ const playYT = async (message) => {
         let secMsg = messages[messages.length - 2][1];
         let t = 0, l = 0;
         const eEmbed = new MessageEmbed()
-            .setColor('#0652DD')
+            .setColor(server.queue[0].thumbnail.indexOf("scdn") > 1 ? "#2ecc71" : '#f1c40f')
             .setTitle('Music Bot')
             .setAuthor('Music')
-            .setDescription('Playing Music')
+            .setDescription(server.queue[0].thumbnail.indexOf("scdn") > 1 ? "You've added song from spotify! It can sound not as you expect :)" : 'Playing Music')
             .setImage(server.queue[0].thumbnail)
-            .addField('Now Playing', server.queue[0].title)
+            .addField('Now Playing', `[${server.queue[0].title}](${server.queue[0].thumbnail.indexOf("scdn") > 1 ? server.queue[0].spotifyURL : server.queue[0].url})`)
             .addField('Length: ', server.queue[0].length)
         firstMsg.edit(eEmbed);
         firstMsg.react("⏭").then(() => firstMsg.react('⏯')).then(() => firstMsg.react('⏹'))

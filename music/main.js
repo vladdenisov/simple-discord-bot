@@ -2,8 +2,12 @@ const ytdl = require('ytdl-core');
 const {
     playYT
 } = require('../utils/playYT.js');
+const {
+    parseSpoti
+} = require('../utils/parseSpoti.js');
 const { leave } = require('../utils/leave.js');
 const { join } = require('../utils/join.js');
+
 module.exports = async function music_main(message, client, args) {
     console.log([message.content]);
     message.delete();
@@ -19,7 +23,7 @@ module.exports = async function music_main(message, client, args) {
     }
 
     let info;
-    console.log("IS HOOKED: " + servers[message.guild.id].hooked);
+    //console.log("IS HOOKED: " + servers[message.guild.id].hooked);
     if (!servers[message.guild.id].hooked) {
         servers[message.guild.id] = {
             "hooked": true,
@@ -29,23 +33,23 @@ module.exports = async function music_main(message, client, args) {
 
         }
         if (server.dispatcher) server.dispatcher.pausedSince === null;
-        console.log("NEW ishooked" + servers[message.guild.id].hooked);
-        console.log("HOOKING");
+        //console.log("NEW ishooked" + servers[message.guild.id].hooked);
+        //console.log("HOOKING");
         client.on('raw', event => {
             server = servers[message.guild.id];
             let mRCH = message.guild.channels.find(channel => channel.name === "music_req");
             if ((event.t === "MESSAGE_REACTION_ADD" || event.t === "MESSAGE_REACTION_REMOVE") && parseInt(mRCH.id) === parseInt(event.d.channel_id)) {
                 if (message.guild.members.get(event.d.user_id).user.bot) return;
                 if (event.d.emoji.name === "⏭") {
-                    server.dispatcher.end();
+                    servers[message.guild.id].dispatcher.end();
                     server.dispatcher.pausedSince === null;
                 }
                 if (event.d.emoji.name === "⏹") {
-                    console.log('leavee');
+                    //console.log('leavee');
                     leave(message);
                 }
                 if (event.d.emoji.name === "⏯") {
-                    console.log(["PAUSE", server.isPaused])
+                    //console.log(["PAUSE", server.isPaused])
                     if (servers[message.guild.id].isPaused === true) {
                         servers[message.guild.id].dispatcher.resume();
                         servers[message.guild.id] = {
@@ -70,8 +74,10 @@ module.exports = async function music_main(message, client, args) {
             }
         });
     }
+    console.log([message.content.indexOf("youtube"), message.content.indexOf("spotify")])
     if (args === "PLAY_MUSIC") {
-        if (message.content.indexOf('youtube') || message.content.indexOf('youtu.be')) {
+        if (message.content.indexOf('youtube') > 1 || message.content.indexOf('youtu.be') > 1) {
+            console.log("YOUTUBE");
             let url = message.content;
             try {
                 info = await ytdl.getBasicInfo(url);
@@ -106,20 +112,92 @@ module.exports = async function music_main(message, client, args) {
 
             }
         }
+        if (message.content.indexOf('spotify') > 1) {
+            const parser = async (inputUrl) => {
+                if (inputUrl.includes('/track/')) {
+                    return 'song';
+                }
+                else if (inputUrl.includes('/playlist/')) {
+                    return 'playlist';
+                }
+                else if (inputUrl.includes('/album/')) {
+                    return 'album';
+                }
+                else if (inputUrl.includes('/artist/')) {
+                    return 'artist';
+                }
+                else {
+                    return new Error(`Invalid spotify URL`);
+                }
+            }
+            console.log("SPOTIFY");
+            let url = message.content;
+            switch (await parser(url)) {
+                case 'song': {
+                    const data = await parseSpoti(url, "song");
+                    server.queue.push({
+                        url: data[0].link,
+                        title: `${data[1].name} by ${data[1].artists[0]}`,
+                        length: data[0].duration,
+                        thumbnail: data[1].cover_url,
+                        spotifyURL: data[1].url
+                    })
+                    console.log(server.queue);
+                    if (server.queue[0]) {
+                        if (!server.queue[1]) {
+                            playYT(message);
+                        } else {
+                            message.channel.messages.fetch().then(async (messages) => {
+                                messages = Array.from(messages);
+                                let secMsg = messages[messages.length - 2][1];
+                                let t = 0;
+                                let m = [];
+                                server.queue.map((el) => { if (t === 0) { t++; return; } else if (t > 20) { return; } else { t++; m.push(`${t - 1}. **${el.title}** __Length: ${el.length}__\n`); } })
+                                secMsg.edit(`***Queue List: \n*** ${m.join("")}`);
+                            })
+                        }
+                    }
+                    return;
+                }
+                case "album": {
+                    const data = await parseSpoti(url, "album");
+                    console.log(data[0]);
+                    data.map((data) => {
+                        server.queue.push({
+                            url: data[0].link,
+                            title: `${data[1].name} by ${data[1].artists[0]}`,
+                            length: data[0].duration,
+                            thumbnail: data[1].cover_url,
+                            spotifyURL: data[1].url
+                        })
+                    })
+                    playYT(message);
+                    return;
+                }
+                case "playlist": {
+                    const data = await parseSpoti(url, "playlist");
+                    console.log(data[0]);
+                    data.map((data) => {
+                        server.queue.push({
+                            url: data[0].link,
+                            title: `${data[1].name} by ${data[1].artists[0]}`,
+                            length: data[0].duration,
+                            thumbnail: data[1].cover_url,
+                            spotifyURL: data[1].url
+                        })
+                    })
+                    playYT(message);
+                    return;
+                }
+            }
+
+
+
+
+        }
     }
 
     if (args === "PLAYLIST_PLAY") {
         playYT(message);
-        // message.channel.messages.fetch().then((messages) => {
-        //     console.log("CHANGE");
-        //     messages = Array.from(messages);
-        //     let secMsg = messages[messages.length - 2][1];
-        //     let t = 0;
-        //     let m = [];
-        //     server.queue.map((el) => { if (t === 0) { t++; return; } else if (t > 20) { return; } else { t++; m.push(`${t - 1}. **${el.title}** __Length: ${el.length}__\n`); } })
-        //     secMsg.edit(`***Queue List: \n*** ${m.join("")}`);
-        // }).then();
-
-
     }
 }

@@ -5,14 +5,11 @@ const URL = require('url');
 const music_main = require("../music/main.js");
 const ytpl = require('ytpl');
 exports.run = async (client, message, args) => {
-    const PLAYLIST_REGEX = /^(PL|UU|LL|RD)[a-zA-Z0-9-_]{16,43}$/;
-    const ALBUM_REGEX = /^OLAK5uy_[a-zA-Z0-9-_]{33}$/;
     let url = args[0];
-    const parsed = URL.parse(url, true);
-    console.log(parsed);
-    console.log([PLAYLIST_REGEX.test(parsed.query.list), ALBUM_REGEX.test(parsed.query.list)]);
+    if (!ytpl.validateURL(url)) {
+        message.reply("Provide valid link to playlist").then((message) => setTimeout(() => message.delete, 2000))
+    }
     message.delete();
-
     let server;
     if (servers[message.guild.id]) {
         if (servers[message.guild.id].connection.leave) await join(message);

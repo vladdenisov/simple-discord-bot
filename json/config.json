@@ -3,5 +3,7 @@
     "prefix": "prefix",
     "game_name": "game",
     "owner": "owner_id",
-    "api_w": "api key from https://www.weatherbit.io"
+    "api_w": "api key from https://www.weatherbit.io",
+    "sp_id": "spotify developer id",
+    "sp_secret": "spotify developer secret"
 }
