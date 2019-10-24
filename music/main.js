@@ -7,6 +7,7 @@ const {
 } = require('../utils/parseSpoti.js');
 const { leave } = require('../utils/leave.js');
 const { join } = require('../utils/join.js');
+const { Client, MessageEmbed } = require('discord.js');
 
 module.exports = async function music_main(message, client, args) {
     console.log([message.content]);
@@ -74,7 +75,7 @@ module.exports = async function music_main(message, client, args) {
             }
         });
     }
-    console.log([message.content.indexOf("youtube"), message.content.indexOf("spotify")])
+    // console.log([message.content.indexOf("youtube"), message.content.indexOf("spotify")])
     if (args === "PLAY_MUSIC") {
         if (message.content.indexOf('youtube') > 1 || message.content.indexOf('youtu.be') > 1) {
             console.log("YOUTUBE");
@@ -142,7 +143,7 @@ module.exports = async function music_main(message, client, args) {
                         thumbnail: data[1].cover_url,
                         spotifyURL: data[1].url
                     })
-                    console.log(server.queue);
+                    //console.log(server.queue);
                     if (server.queue[0]) {
                         if (!server.queue[1]) {
                             playYT(message);
@@ -161,7 +162,7 @@ module.exports = async function music_main(message, client, args) {
                 }
                 case "album": {
                     const data = await parseSpoti(url, "album");
-                    console.log(data[0]);
+                    // console.log(data[0]);
                     data.map((data) => {
                         server.queue.push({
                             url: data[0].link,
@@ -176,7 +177,7 @@ module.exports = async function music_main(message, client, args) {
                 }
                 case "playlist": {
                     const data = await parseSpoti(url, "playlist");
-                    console.log(data[0]);
+                    // console.log(data[0]);
                     data.map((data) => {
                         server.queue.push({
                             url: data[0].link,
@@ -194,6 +195,31 @@ module.exports = async function music_main(message, client, args) {
 
 
 
+        }
+        if (parseInt(message.content.indexOf("youtube")) === -1 && message.content.indexOf("spotify") === -1) {
+            if (message.content.indexOf("http") === -1 && message.content.indexOf("mp3") === -1) {
+                message.channel.send(`Please send link to YouTube, Spotify or any music file`).then((m) => setTimeout(() => m.delete(), 2000));
+                return;
+            }
+            //console.log(server.connection);
+            server.dispatcher = server.connection.play(message.content);
+            message.channel.messages.fetch().then((messages) => {
+                messages = Array.from(messages);
+                let firstMsg = messages[messages.length - 1][1];
+                let secMsg = messages[messages.length - 2][1];
+                let t = 0, l = 0;
+                const eEmbed = new MessageEmbed()
+                    .setColor("#FDA7DF")
+                    .setTitle('Music Bot')
+                    .setAuthor('Music')
+                    .setDescription('Playing Music')
+                    .setThumbnail('https://cdn.discordapp.com/avatars/573460427753914368/5f6f60497f371261922916793ffbead0.png');
+                firstMsg.edit(eEmbed);
+                firstMsg.react("⏭").then(() => firstMsg.react('⏯')).then(() => firstMsg.react('⏹'))
+                let m = [];
+                server.queue.map((el) => { if (t === 0) { t++; return; } else if (t > 20) { return; } else { t++; m.push(`${t - 1}. **${el.title}** __Length: ${el.length}__\n`); } })
+                secMsg.edit(`***Queue List: \n*** ${m.join("")}`);
+            })
         }
     }
 

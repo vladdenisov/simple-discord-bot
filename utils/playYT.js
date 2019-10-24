@@ -30,7 +30,8 @@ const playYT = async (message) => {
     })
     try {
         server.dispatcher = server.connection.play(ytdl(link, {
-            filter: "audioonly"
+            filter: "audioonly",
+            highWaterMark: 1 << 25
         }))
     } catch (error) {
         console.error([error.message, error.name]);
