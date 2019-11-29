@@ -1,7 +1,7 @@
 # Simple Discord Bot [![Build Status](https://travis-ci.com/vladdenisov/simple-discord-bot.svg?branch=master)](https://travis-ci.com/vladdenisov/simple-discord-bot) [![Greenkeeper badge](https://badges.greenkeeper.io/vladdenisov/simple-discord-bot.svg)](https://greenkeeper.io/)
 ## Installation
 1.  `git clone https://github.com/vladdenisov/simple-discord-bot.git`
-1.  `cd discord-bots`
+1.  `cd simple-discord-bot`
 1. `npm i or yarn`
 1. `Edit json/config.json`
 1. `node .`
