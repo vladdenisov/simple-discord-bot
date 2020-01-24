@@ -7,7 +7,8 @@
 1. `node .`
 
 **If you have linux, before installation you need to run:**
-`sudo apt-get install autoconf libtool`
+`sudo apt install autoconf libtool g++ make`  
+___(if you aren't on Ubuntu, use your package manager to install this packages)___
 
 ## MUSIC
 ### How does it work?
