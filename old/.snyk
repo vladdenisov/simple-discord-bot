@@ -1,0 +1,22 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.14.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:hoek:20180212':
+    - ffmpeg-binaries > decompress-tarxz > lzma-native > node-pre-gyp > hawk > hoek:
+        patched: '2020-03-29T23:12:14.666Z'
+    - ffmpeg-binaries > decompress-tarxz > lzma-native > node-pre-gyp > hawk > boom > hoek:
+        patched: '2020-03-29T23:12:14.666Z'
+    - ffmpeg-binaries > decompress-tarxz > lzma-native > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2020-03-29T23:12:14.666Z'
+    - ffmpeg-binaries > decompress-tarxz > lzma-native > node-pre-gyp > request > hawk > hoek:
+        patched: '2020-03-29T23:12:14.666Z'
+    - ffmpeg-binaries > decompress-tarxz > lzma-native > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2020-03-29T23:12:14.666Z'
+    - ffmpeg-binaries > decompress-tarxz > lzma-native > node-pre-gyp > request > hawk > boom > hoek:
+        patched: '2020-03-29T23:12:14.666Z'
+    - ffmpeg-binaries > decompress-tarxz > lzma-native > node-pre-gyp > request > hawk > sntp > hoek:
+        patched: '2020-03-29T23:12:14.666Z'
+    - ffmpeg-binaries > decompress-tarxz > lzma-native > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2020-03-29T23:12:14.666Z'

@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "Vlad Denisov",
   "license": "ISC",
@@ -15,6 +17,8 @@
     "node-opus": "^0.3.1",
     "request": "^2.88.0",
     "ytdl": "^1.0.1",
-    "ytdl-core": "^1.0.0"
-  }
+    "ytdl-core": "^1.0.0",
+    "snyk": "^1.305.0"
+  },
+  "snyk": true
 }
