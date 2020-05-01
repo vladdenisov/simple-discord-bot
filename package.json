@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo At this point, the build has succeded and the bot should've been tested, and we don't want to run the bot from the CI."
+    "test": "echo At this point, the build has succeded and the bot should've been tested, and we don't want to run the bot from the CI.",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "",
   "license": "ISC",
@@ -22,9 +24,11 @@
     "spotify-web-api-node": "^4.0.0",
     "ytdl-core": "^1.0.0",
     "ytpl": "^0.1.17",
-    "ytsr": "^0.1.8"
+    "ytsr": "^0.1.8",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "eslint": "^6.4.0"
-  }
+  },
+  "snyk": true
 }
