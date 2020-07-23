@@ -21,7 +21,7 @@
     "request": "^2.88.0",
     "spotify-web-api-node": "^4.0.0",
     "ytdl-core": "^1.0.0",
-    "ytpl": "^0.1.17",
+    "ytpl": "^0.2.0",
     "ytsr": "^0.1.8"
   },
   "devDependencies": {
